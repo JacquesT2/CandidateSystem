@@ -13,7 +13,8 @@ export async function getRagResponse(chatHistory: string) {
     "type": "text"
 
     },
-  };
+    };
+  console.log("no fail")
       const response = await axios.post('https://api.mistral.ai/v1/chat/completions', payload, {
           headers: {
               'Authorization': `Bearer ${apiKey}`,
@@ -21,6 +22,8 @@ export async function getRagResponse(chatHistory: string) {
               'Accept': "application/json",
           }
       })
+      console.log("fail")
+
   const data: MistralChatCompletion = response.data
     const result = data.choices[0].message.content
     return result

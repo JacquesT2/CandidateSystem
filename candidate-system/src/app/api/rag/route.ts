@@ -12,10 +12,11 @@ export async function POST(req: NextRequest) {
       // You now have the file data as a Buffer, ready for processing
     if (result.includes("Give me candidate")) {
         const topCandidates = await returnTopResponses(result, 3)
-        messages.push({role: "user", content: result + "here are the top 3 candidates i found please tell me succintly interesting information about them individually regarding how well they would fit the position"+ topCandidates})
-      result = await getRagResponse(JSON.parse(JSON.stringify(messages.toString())))
-      console.log(messages)
-      console.log(JSON.stringify(messages))
+        messages.push({role: "user", content: JSON.stringify(result) + "here are the top 3 candidates i found please tell me succintly interesting information about them individually regarding how well they would fit the position"+ JSON.stringify(topCandidates)})
+        console.log(messages)
+        console.log(JSON.stringify(messages))
+        result = await getRagResponse(JSON.parse(JSON.stringify(messages)))
+
         
       }
 

@@ -93,12 +93,18 @@ export default function ChatPage() {
             key={index}
             className={`max-w-lg p-4 rounded-lg mx-4 ${
               message.role === 'user'
-                ? 'bg-blue-600 text-white ml-auto'
-                : 'bg-gray-700 text-gray-200 mr-auto'
-            }`}
+                ? 'text-white ml-auto'
+                : 'text-gray-200 mr-auto'
+              }`}
+              style={{
+                backgroundColor: message.role === 'user' ? 'rgba(0, 0, 255, 0.3)' : 'text-orange-2000',
+              }}
           >
+            
             {/* Display text message */}
-            {message.content && <p>{message.content}</p>}
+            <p style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word', wordBreak: 'break-word' }}>
+    {message.content}
+</p>
 
           
           </div>
