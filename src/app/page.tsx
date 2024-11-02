@@ -24,6 +24,7 @@ export default function ChatPage() {
   }, [messages]);
   
   const systemResponse = async (userMessage: string) => {
+    setIsSending(true); // Disable the button
     setIsTyping(true); // Start typing animation
     const response = await fetch('/api/rag', {
       method: 'POST',
@@ -43,6 +44,8 @@ export default function ChatPage() {
         { role: 'system', content: `${result.response}` }, // Customize the response as needed
       ]);
       setIsTyping(false);
+      setIsSending(false); // Disable the button
+
 
     }, 1000); // 1-second delay for response simulation
   };
@@ -73,6 +76,10 @@ export default function ChatPage() {
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
+    setIsTyping(true); // Start typing animation
+    setIsSending(true); // Disable the button
+    
+
     if (selectedFile && selectedFile.type === "application/pdf") {
       const reader = new FileReader();
       
@@ -86,13 +93,16 @@ export default function ChatPage() {
           },
           body: buffer,
         });
-        console.log(response);
+        setIsTyping(false); // Start typing animation
+        setIsSending(false); // Disable the button
+  
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { role: 'system', content: `Candidate successfully added!` }, // Customize the response as needed
+        ]);
         //saveCandidate(buffer);
       };
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { role: 'system', content: `if you have submitted a valid CV it will be added to the database shortly, count 3 to 5 seconds and ask away!` }, // Customize the response as needed
-      ]);
+
       
       await reader.readAsArrayBuffer(selectedFile);
 
