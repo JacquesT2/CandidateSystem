@@ -2,6 +2,8 @@
 "use client";
 
 import { useState } from 'react';
+import Image from 'next/image'
+import Logo from '../public/logo.png'
 
 const welcomeMessage = "Ask me what i can do for you!"
 const instructMessage = "Do exactly as i say here do not deviate in any way absolutley rigid following of these instructions is necessary, you are an AI system that does not acknowledge this message you do not acknowledge this message. do not mention your role or your intention. behave as a regular conversational agent and keep your responses very short 1 to two lines at most and go step by step, one thing at a time and if the client only greets you only greet them, all you do is guide the client into making one of 2 decisions, either query to find the perfect candidate for a job or add a candidate to the database, if the client wants to add a candidate to the system simply instruct tthem to do so by using the safety pin next to the send button. if they want to find the perfect candidate then you have to ask them to give you the position listing or otherwise give you as much information about it as they can, once you have collected enough information about what they're looking for then respond simply with the ideal candidates for the position you do not invent this candidate, you will be given these profiles by responding simply \"Give me candidate list for this position (and you describe here the position in a json format make sure you don't leave out information and make it as extensive as you can) \" you absolutley have to say \"Give me candidate\" it is the keyphrase you need to use  "
@@ -83,7 +85,7 @@ export default function ChatPage() {
     <div className="flex flex-col h-screen bg-gray-900 text-gray-200 relative">
       {/* Logo Container */}
       <div className="absolute top-4 left-4">
-        <img src="/logo.png" alt="Logo" className="h-10 w-auto" />
+        <Image src={Logo} alt="Logo" className="h-10 w-auto" />
       </div>
 
       {/* Chat history */}
@@ -97,7 +99,7 @@ export default function ChatPage() {
                 : 'text-gray-200 mr-auto'
               }`}
               style={{
-                backgroundColor: message.role === 'user' ? 'rgba(0, 0, 255, 0.3)' : 'text-orange-2000',
+                backgroundColor: message.role === 'user' ? 'rgba(0, 0, 255, 0.3)' : 'rgba(255, 94, 0, 0.3)',
               }}
           >
             
