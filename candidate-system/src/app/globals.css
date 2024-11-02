@@ -14,8 +14,12 @@
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+.chatGradientBackground {
+  background: #fed00150;
+}
+
+.logoColour { background: 'rgba(254,113,1,255)'}
+
+.inputGradientBackground {
+  background: linear-gradient(to bottom,  #55300000,#da020200);
 }

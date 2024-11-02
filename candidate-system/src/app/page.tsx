@@ -82,9 +82,9 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-900 text-gray-200 relative">
+    <div className="flex flex-col h-screen chatGradientBackground text-gray-200 relative">
       {/* Logo Container */}
-      <div className="absolute top-4 left-4">
+      <div className="absolute top-6 left-6">
         <Image src={Logo} alt="Logo" className="h-10 w-auto" />
       </div>
 
@@ -96,10 +96,10 @@ export default function ChatPage() {
             className={`max-w-lg p-4 rounded-lg mx-4 ${
               message.role === 'user'
                 ? 'text-white ml-auto'
-                : 'text-gray-200 mr-auto'
+                : 'text-white mr-auto'
               }`}
               style={{
-                backgroundColor: message.role === 'user' ? 'rgba(0, 0, 255, 0.3)' : 'rgba(255, 94, 0, 0.3)',
+                backgroundColor: message.role === 'user' ? 'rgba(150, 150, 150, 1)' : 'rgba(254,163,0,255)',
               }}
           >
             
@@ -114,13 +114,13 @@ export default function ChatPage() {
       </div>
 
       {/* Input area */}
-      <div className="p-4 bg-gray-800 flex items-center justify-center">
-        <div className="w-full max-w-lg bg-gray-800 p-2 rounded-lg border border-gray-700 mb-6 mx-4">
+      <div className="p-4 inputGradientBackground flex items-center justify-center">
+        <div className="w-full max-w-lg bg-gray-50 p-2 rounded-lg border border-gray-300  mb-6 mx-4">
           <div className="flex flex-col space-y-2">
             <div className="flex items-center space-x-2">
               <input
                 type="text"
-                className="flex-1 bg-gray-700 text-gray-200 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+                className="flex-1 bg-gray-200 text-gray-700 border border-gray-400 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
                 placeholder="Type your message..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -159,7 +159,7 @@ export default function ChatPage() {
 
               {/* Send Button */}
               <div className="relative">
-                <span className="absolute inset-0 rounded-lg bg-orange-700 opacity-30"></span>
+                <span className="absolute inset-0 rounded-lg bg-orange-500 "></span>
                 <button
                   onClick={handleSendMessage}
                   className="relative z-10 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary-foreground h-10 m-0 flex min-h-10 min-w-10 items-center justify-center rounded-xl bg-primary/10 p-0 hover:bg-primary/50"
@@ -173,11 +173,11 @@ export default function ChatPage() {
                     height="24"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke="currentColor"
+                    stroke="#ededed"
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="mt-0.5 h-5 w-5 text-orange-2000"
+                    className="mt-0.5 h-5 w-5"
                   >
                     <path d="M22 2l-7 20-4-9-9-4Z"></path>
                     <path d="M22 2L11 13"></path>
