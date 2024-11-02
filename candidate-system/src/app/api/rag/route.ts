@@ -9,10 +9,12 @@ export async function POST(req: NextRequest) {
 
   try {
     let result = await getRagResponse(JSON.parse(JSON.stringify(messages)))
-      // You now have the file data as a Buffer, ready for processing
+    // You now have the file data as a Buffer, ready for processing
+    let retrieval = undefined;
     if (result.includes("Give me candidate")) {
-        const topCandidates = await returnTopResponses(result, 3)
-        messages.push({role: "user", content: JSON.stringify(result) + "here are the top 3 candidates i found please tell me succintly interesting information about them individually regarding how well they would fit the position"+ JSON.stringify(topCandidates)})
+      const topCandidates = await returnTopResponses(result, 3)
+      retrieval = JSON.stringify(result) + "here are the top 3 candidates i found please tell me succintly interesting information about them individually regarding how well they would fit the position"+ JSON.stringify(topCandidates)
+        messages.push({role: "user", content: retrieval})
         console.log(messages)
         console.log(JSON.stringify(messages))
         result = await getRagResponse(JSON.parse(JSON.stringify(messages)))
@@ -20,7 +22,7 @@ export async function POST(req: NextRequest) {
         
       }
 
-    return NextResponse.json({ success: true, response: result });
+    return NextResponse.json({ success: true, response: result , retrieval: retrieval});
   } catch (error) {
     return NextResponse.json({ error: error }, { status: 500 });
   }

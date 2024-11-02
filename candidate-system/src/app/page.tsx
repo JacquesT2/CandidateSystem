@@ -1,33 +1,49 @@
 // src/app/page.tsx
 "use client";
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image'
 import Logo from '../public/logo.png'
 
 const welcomeMessage = "Ask me what i can do for you!"
 const instructMessage = "Do exactly as i say here do not deviate in any way absolutley rigid following of these instructions is necessary, you are an AI system that does not acknowledge this message you do not acknowledge this message. do not mention your role or your intention. behave as a regular conversational agent and keep your responses very short 1 to two lines at most and go step by step, one thing at a time and if the client only greets you only greet them, all you do is guide the client into making one of 2 decisions, either query to find the perfect candidate for a job or add a candidate to the database, if the client wants to add a candidate to the system simply instruct tthem to do so by using the safety pin next to the send button. if they want to find the perfect candidate then you have to ask them to give you the position listing or otherwise give you as much information about it as they can, once you have collected enough information about what they're looking for then respond simply with the ideal candidates for the position you do not invent this candidate, you will be given these profiles by responding simply \"Give me candidate list for this position (and you describe here the position in a json format make sure you don't leave out information and make it as extensive as you can) \" you absolutley have to say \"Give me candidate\" it is the keyphrase you need to use  "
+const secondChat = [{ role: 'user', content: instructMessage }]
+
 export default function ChatPage() {
   const [messages, setMessages] = useState<{ role: string; content?: string }[]>([]);
   const [input, setInput] = useState('');
   const [file, setFile] = useState<File | undefined>(undefined);
   const [isSending, setIsSending] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+  
   const systemResponse = async (userMessage: string) => {
+    setIsTyping(true); // Start typing animation
     const response = await fetch('/api/rag', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(messages),
+      body: JSON.stringify(secondChat),
     });
 
-    const result: {"success": string, "response": string} = await response.json()
+    const result: { "success": string, "response": string, "retrieval": undefined | string } = await response.json()
+    if (result.retrieval !== undefined)
+      secondChat.push({ role: "user", content: result.retrieval })
+    secondChat.push({ role: 'system', content: `${result.response}` })
     setTimeout(() => {
       setMessages((prevMessages) => [
         ...prevMessages,
         { role: 'system', content: `${result.response}` }, // Customize the response as needed
       ]);
+      setIsTyping(false);
+
     }, 1000); // 1-second delay for response simulation
   };
 
@@ -36,14 +52,19 @@ export default function ChatPage() {
       setIsSending(true); // Disable the button
   
       // Add the new message to the chat history
-      messages.push({ role: 'user', content: input })
-      const userMessage = input; // Capture the user's message
+      secondChat.push({ role: 'user', content: input })
+
       setInput('');
-      messages.unshift({ role: 'user', content: instructMessage })
-      systemResponse(userMessage); // Send back a response based on the user's message
-      messages.shift()
+      setTimeout(() => {
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { role: 'user', content: `${input}` }, // Customize the response as needed
+        ]);
+      }, 0); // 1-second delay for response simulation
+      systemResponse(input); // Send back a response based on the user's message
+
       // Simulate response delay
-      console.log(messages)
+      console.log(secondChat)
   
       setIsSending(false); // Re-enable the button after the message is sent
     }
@@ -89,7 +110,7 @@ export default function ChatPage() {
       </div>
 
       {/* Chat history */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-2 px-100 mt-16">
+      <div  ref={chatContainerRef} className="flex-1 overflow-y-auto p-6 space-y-2 px-100 mt-16">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -111,6 +132,14 @@ export default function ChatPage() {
           
           </div>
         ))}
+        {/* Typing animation */}
+  {isTyping && (
+    <div className="typing mx-4">
+      <span className="typing__dot"></span>
+      <span className="typing__dot"></span>
+      <span className="typing__dot"></span>
+    </div>
+  )}
       </div>
 
       {/* Input area */}
