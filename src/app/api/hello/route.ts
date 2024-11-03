@@ -10,12 +10,15 @@ export async function POST(request: Request) {
   }
 
   try {
-      const buffer = await streamToBuffer(stream);
-      setDB(buffer)
+    const buffer = await streamToBuffer(stream);
+      const apiKey = request.headers.get('Authorization')
+      if (apiKey === null)
+        throw ("no api key was provided")
+      setDB(buffer,apiKey)
     // You now have the file data as a Buffer, ready for processing
     return NextResponse.json({ success: true, length: buffer.length });
   } catch (error) {
-    return NextResponse.json({ error: "IDC" }, { status: 500 });
+    return NextResponse.json({ error: error }, { status: 500 });
   }
 }
 

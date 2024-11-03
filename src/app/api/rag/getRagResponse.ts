@@ -1,9 +1,8 @@
 import axios from "axios";
 import { MistralChatCompletion } from "../hello/type/mistralResponseType";
 
-export async function getRagResponse(chatHistory: string) {
+export async function getRagResponse(chatHistory: string, apiKey: string) {
     // Send request
-    const apiKey = process.env.API_KEY ; // Replace with your actual API key
     const payload = {
       model: "mistral-large-2407",
       //"temperature": 0.1,
@@ -14,7 +13,6 @@ export async function getRagResponse(chatHistory: string) {
 
     },
     };
-  console.log("no fail")
       const response = await axios.post('https://api.mistral.ai/v1/chat/completions', payload, {
           headers: {
               'Authorization': `Bearer ${apiKey}`,
@@ -22,7 +20,6 @@ export async function getRagResponse(chatHistory: string) {
               'Accept': "application/json",
           }
       })
-      console.log("fail")
 
   const data: MistralChatCompletion = response.data
     const result = data.choices[0].message.content

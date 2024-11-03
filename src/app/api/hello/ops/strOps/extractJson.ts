@@ -1,4 +1,4 @@
-export function extractJson(str: string): any | null {
+export function extractJson(str: string): string | null {
     const jsonStart = str.indexOf('{');
     const jsonEnd = str.lastIndexOf('}');
 

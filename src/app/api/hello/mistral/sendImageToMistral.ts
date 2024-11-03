@@ -2,7 +2,7 @@ import axios from "axios";
 import  pdf2pic from "pdf2pic";
 import { MistralChatCompletion } from "../type/mistralResponseType";
 
-export async function sendPixtraleCV(pdfBuffer: Buffer) {
+export async function sendPixtraleCV(pdfBuffer: Buffer, apiKey: string) {
     const pdfToImage = pdf2pic.fromBuffer(pdfBuffer,{
       density: 100,         // DPI for better clarity
       format: "jpeg",       // Output format
@@ -13,7 +13,6 @@ export async function sendPixtraleCV(pdfBuffer: Buffer) {
     // Convert only the first page of the PDF to an image
     const imageData = await pdfToImage(1, {responseType: "base64"});
     // Send arequest
-    const apiKey = process.env.API_KEY; // Replace with your actual API key
     const payload = {
       model: "pixtral-12b-2409",
       "temperature": 0,

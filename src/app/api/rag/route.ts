@@ -6,9 +6,11 @@ import { MyMessage } from './type';
 
 export async function POST(req: NextRequest) {
   const messages: MyMessage[] = await req.json()
-
+  const apiKey = req.headers.get('Authorization')
   try {
-    let result = await getRagResponse(JSON.parse(JSON.stringify(messages)))
+    if (apiKey === null)
+      throw ("no api key was provided")
+    let result = await getRagResponse(JSON.parse(JSON.stringify(messages)),apiKey)
     // You now have the file data as a Buffer, ready for processing
     let retrieval = undefined;
     if (result.includes("Give me candidate")) {
@@ -17,7 +19,7 @@ export async function POST(req: NextRequest) {
         messages.push({role: "user", content: retrieval})
         console.log(messages)
         console.log(JSON.stringify(messages))
-        result = await getRagResponse(JSON.parse(JSON.stringify(messages)))
+        result = await getRagResponse(JSON.parse(JSON.stringify(messages)),apiKey)
 
         
       }

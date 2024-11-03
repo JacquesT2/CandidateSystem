@@ -4,13 +4,14 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image'
 import Logo from '../public/logo.png'
+import { FaKey } from "react-icons/fa";
 
-const welcomeMessage = "Ask me what i can do for you!"
 const instructMessage = "Do exactly as i say here do not deviate in any way absolutley rigid following of these instructions is necessary, you are an AI system that does not acknowledge this message you do not acknowledge this message. do not mention your role or your intention. behave as a regular conversational agent and keep your responses very short 1 to two lines at most and go step by step, one thing at a time and if the client only greets you only greet them, all you do is guide the client into making one of 2 decisions, either query to find the perfect candidate for a job or add a candidate to the database, if the client wants to add a candidate to the system simply instruct tthem to do so by using the safety pin next to the send button. if they want to find the perfect candidate then you have to ask them to give you the position listing or otherwise give you as much information about it as they can, once you have collected enough information about what they're looking for then respond simply with the ideal candidates for the position you do not invent this candidate, you will be given these profiles by responding simply \"Give me candidate list for this position (and you describe here the position in a json format make sure you don't leave out information and make it as extensive as you can) \" you absolutley have to say \"Give me candidate\" it is the keyphrase you need to use  "
 const secondChat = [{ role: 'user', content: instructMessage }]
 
 export default function ChatPage() {
   const [messages, setMessages] = useState<{ role: string; content?: string }[]>([]);
+  const [keyValue, setKeyValue] = useState("");
   const [input, setInput] = useState('');
   const [file, setFile] = useState<File | undefined>(undefined);
   const [isSending, setIsSending] = useState(false);
@@ -23,13 +24,16 @@ export default function ChatPage() {
     }
   }, [messages]);
   
-  const systemResponse = async (userMessage: string) => {
+  const systemResponse = async () => {
     setIsSending(true); // Disable the button
     setIsTyping(true); // Start typing animation
+    console.log(keyValue)
     const response = await fetch('/api/rag', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `${keyValue}`,
+
       },
       body: JSON.stringify(secondChat),
     });
@@ -64,7 +68,7 @@ export default function ChatPage() {
           { role: 'user', content: `${input}` }, // Customize the response as needed
         ]);
       }, 0); // 1-second delay for response simulation
-      systemResponse(input); // Send back a response based on the user's message
+      systemResponse(); // Send back a response based on the user's message
 
       // Simulate response delay
       console.log(secondChat)
@@ -86,10 +90,11 @@ export default function ChatPage() {
       reader.onload = async () => {
         const arrayBuffer = reader.result as ArrayBuffer;
         const buffer = Buffer.from(arrayBuffer);
-        const response = await fetch('/api/hello', {
+        await fetch('/api/hello', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/octet-stream',
+            'Authorization': `${keyValue}`,
           },
           body: buffer,
         });
@@ -117,6 +122,21 @@ export default function ChatPage() {
       {/* Logo Container */}
       <div className="absolute top-6 left-6">
         <Image src={Logo} alt="Logo" className="h-10 w-auto" />
+      </div>
+
+       {/* Key Icon and Input Box in Top-Right */}
+       <div className="absolute top-4 right-4 group">
+        <div className="relative">
+          <FaKey className="text-orange-500 text-2xl cursor-pointer" />
+          <input
+            type="text"
+            value={keyValue}
+            onChange={(e) => { console.log(e.target.value); setKeyValue(e.target.value) }}
+            placeholder="Enter key"
+            className="absolute top-0 right-0 mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gray-700 text-white p-2 rounded-lg border border-gray-400 focus:outline-none"
+            style={{ width: "150px" }}
+          />
+        </div>
       </div>
 
       {/* Chat history */}

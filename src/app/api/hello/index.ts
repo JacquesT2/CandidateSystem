@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 
 
-export async function initDB() {
+export async function initDB(apiKey: string) {
   // Path to the folder
   const folderPath = 'src/app/api/hello/data/Input';
 
@@ -22,7 +22,7 @@ export async function initDB() {
           console.error(`Error reading file ${file}:`, err);
           return;
         }
-        const name = await setDB(buffer);
+        const name = await setDB(buffer, apiKey);
         const newFileName = folderPath+`${name}.pdf`
         fs.rename(filePath, newFileName, (err) => {
           if (err) {
@@ -36,10 +36,10 @@ export async function initDB() {
   });
 }
 
-export async function setDB(pdfBuffer: Buffer) {
+export async function setDB(pdfBuffer: Buffer, apiKey: string) {
   // Handle the POST request
-  const response = await sendPixtraleCV(pdfBuffer)
-  const json = await getJsonMixtrale(response)
+  const response = await sendPixtraleCV(pdfBuffer, apiKey)
+  const json = await getJsonMixtrale(response, apiKey)
   
   const { MongoClient } = require('mongodb');
 
@@ -51,12 +51,12 @@ export async function setDB(pdfBuffer: Buffer) {
   const db = client.db("CVs");
   const collection = db.collection("CVsTheReturn");
 
-  const inserted = await collection.insertOne(json);
+  await collection.insertOne(json);
   const noDoc = await collection.countDocuments()
 
   if (noDoc == 1){
-    await initDB()
+    await initDB(apiKey)
   }
   await client.disconnect;
-  return json.personal_information.name
+
 }

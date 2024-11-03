@@ -22,5 +22,5 @@ export interface MistralChatCompletion {
   interface ChatMessage {
     role: string;
     content: string;
-    tool_calls: null | any;  // Adjust the type based on actual tool_calls structure if available
+    tool_calls: null | unknown;  // Adjust the type based on actual tool_calls structure if available
   }

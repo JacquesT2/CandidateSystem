@@ -1,4 +1,5 @@
 import { Candidate } from "./type";
+import { MongoClient } from 'mongodb';
 
 function jaccardSimilarity(query: string, document: string): number {
     const queryWords = query.toLowerCase().split(" ");
@@ -17,7 +18,6 @@ function jaccardSimilarity(query: string, document: string): number {
 export async function returnTopResponses(query: string, n: number): Promise<Candidate[]> {
 
     const url = 'mongodb://localhost:27017';
-    const { MongoClient } = require('mongodb');
     const client = new MongoClient(url);
 
 
@@ -27,7 +27,8 @@ export async function returnTopResponses(query: string, n: number): Promise<Cand
         const collection = db.collection("CVsTheReturn");
         
         // Fetch all candidates
-        const collectionOfCandidates: Candidate[] = await collection.find().toArray();
+        const data = await collection.find().toArray();
+        const collectionOfCandidates:  Candidate[]   = data as  Candidate[] 
         if (n > collectionOfCandidates.length) {
             n = collectionOfCandidates.length
         }

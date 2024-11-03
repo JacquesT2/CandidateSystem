@@ -2,9 +2,8 @@ import axios from "axios";
 import { MistralChatCompletion } from "../type/mistralResponseType";
 import { extractJson } from "../ops/strOps/extractJson";
 
-export async function getJsonMixtrale(cvDescription: string) {
+export async function getJsonMixtrale(cvDescription: string, apiKey: string) {
     // Send request
-    const apiKey = process.env.API_KEY; // Replace with your actual API key
     const format = jsonFormat;
     const payload = {
       model: "open-mixtral-8x22b",

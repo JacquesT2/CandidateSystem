@@ -51,5 +51,5 @@ interface Project {
 }
 
 interface AdditionalInformation {
-    [key: string]: any;  // Allow for additional fields as key-value pairs
+    [key: string]: unknown;  // Allow for additional fields as key-value pairs
 }
