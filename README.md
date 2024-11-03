@@ -5,7 +5,7 @@ Welcome to the Candidate RAG Application! This project provides an intuitive int
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Ensure you have **Node.js** and **npm** installed.
+- Ensure you have **Node.js**,**npm** and **Next** installed.
 - Set up your **Mistral API key** for authentication.
 
 ### Running the Project
@@ -13,9 +13,9 @@ Welcome to the Candidate RAG Application! This project provides an intuitive int
 1. **Start the Application**
    - Open a terminal at the root of the project.
    - Run the command:
-     ```bash
-     npm run msitral
-     ```
+
+     npm run mistral
+
    - This will build and launch the application.
 
 2. **Accessing the Application**
