@@ -13,7 +13,7 @@ Welcome to the Candidate RAG Application! This project provides an intuitive int
 1. **Start the Application**
    - Open a terminal at the root of the project.
    - Run the command:
-
+    
      npm run mistral
 
    - This will build and launch the application.
