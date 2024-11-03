@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Candidate RAG Application
 
-## Getting Started
+Welcome to the Candidate RAG Application! This project provides an intuitive interface to find the ideal job candidates through a conversational AI powered by Mistral. 
 
-First, run the development server:
+## 🚀 Getting Started
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Prerequisites
+- Ensure you have **Node.js** and **npm** installed.
+- Set up your **Mistral API key** for authentication.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Running the Project
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Start the Application**
+   - Open a terminal at the root of the project.
+   - Run the command:
+     ```bash
+     npm run msitral
+     ```
+   - This will build and launch the application.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. **Accessing the Application**
+   - Once you see the message `Ready in xxxms` in the terminal, open a browser and go to [localhost:3000](http://localhost:3000).
+   - If `localhost:3000` doesn’t work, check the terminal output. Look just above the `Ready` message; under the Next.js version, you’ll find the correct URL. Copy and paste this URL into your browser.
 
-## Learn More
+3. **Setting Up the API Key**
+   - When the page loads, hover over the **orange key icon** at the top right corner. An input bar will appear.
+   - Enter your **Mistral API key** to activate the application.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 💼 Using the Application
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This project is a conversational **Retrieval-Augmented Generation (RAG)** system that enables you to search for job candidates based on specific job listings.
 
-## Deploy on Vercel
+### Adding Candidates to the Database
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- To add candidates, click the **safety pin icon** next to the send button and upload CVs one at a time in PDF format.
+- Uploaded documents are processed as follows:
+  - They are converted to images and scanned by Pixtrale.
+  - The raw data is transformed into JSON format by Mixtrale.
+  - Finally, the JSON data is stored in a MongoDB database.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Finding Candidates
+
+1. **Start a Conversation**: Use the chatbot to initiate a candidate search.
+2. **Provide Job Listing Details**: When prompted, describe the position requirements and other key information about the listing.
+3. **Retrieve Matching Candidates**: The system will perform a similarity search within the database and return the top 3 matching candidates.
+4. **Get In-Depth Information**: Mistral’s `mistral-large-2` model will then provide a curated summary of each candidate. You can ask specific questions about the candidates’ CVs, such as hobbies, job experiences, and other relevant information.
+
+---
+
+## 🛠️ Technical Details
+
+- **Frontend**: Built with **Next.js** for a responsive, interactive experience.
+- **Backend**: Uses **MongoDB** to store candidate data in JSON format.
+- **AI Integration**: Mistral’s model powers the conversational responses, while **Pixtrale** and **Mixtrale** handle document processing and data transformation.
+
+---
+
+Thank you for exploring this project! Feel free to contribute or provide feedback to enhance the application.
